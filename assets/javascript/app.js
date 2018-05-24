@@ -15,6 +15,8 @@ var playersRef = database.ref("/players");
 var playerOne = playersRef.child("1");
 var playerTwo = playersRef.child("2");
 var connectedRef = database.ref(".info/connected"); 
+var thisPlayer 
+var thisPlayer
 
   //Check if two players are in the game already
 
@@ -25,7 +27,7 @@ $("#submit-button").on("click", function(event) {
 
   //Create player object
   var playerName = $("#name").val().trim();
-  var player = {
+  player = {
     name: playerName,
     losses: 0,
     wins: 0
@@ -34,23 +36,33 @@ $("#submit-button").on("click", function(event) {
   //Push player to firebase
   playersRef.once("value").then(function(snapshot) {
     var numPlayers = snapshot.numChildren();
-    console.log(numPlayers)
     if (numPlayers === 0) {
       console.log("player 1");
-    playerOne.set(player);
-  } else if (numPlayers === 1) {
-    console.log("player 2")
-    playerTwo.set(player);
-  } else {
-    console.log("Too many players")
-  }
+      thisPlayer = 1;
+      playerOne.set(player);
+    } else if (numPlayers === 1) {
+      console.log("player 2")
+      thisPlayer = 2;
+      playerTwo.set(player);
+    } else {
+      console.log("Too many players")
+    }
   })
   
-  
-})
+});
 
+  //Collect choices of player
+$(".choices").on("click", function(){
+  var choice = $(this).attr("data");
+  player.choice = choice;
+  console.log(choice); 
 
-  //Display choices to player
+  if(thisPlayer === 1 ){
+    playerOne.set(player);
+  } else if (thisPlayer === 2) {
+    playerTwo.set(player);
+  }
+});
 
   //Rock paper scissors logic 
 
