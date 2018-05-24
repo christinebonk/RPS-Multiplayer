@@ -12,13 +12,13 @@ firebase.initializeApp(config);
 var database = firebase.database();
 
 var playersRef = database.ref("/players");
-var playerOne = playersRef.child("1");
-var playerTwo = playersRef.child("2");
+var playerOne = playersRef.child("one");
+var playerTwo = playersRef.child("two");
 var connectedRef = database.ref(".info/connected"); 
-var thisPlayer 
-var thisPlayer
-
-  //Check if two players are in the game already
+var thisPlayer; //holds whether current player is 1 or 2
+var player; //player object
+var playerOneChoice;
+var playerTwoChoice;
 
 
   //Create player object when user enters game
@@ -59,11 +59,45 @@ $(".choices").on("click", function(){
 
   if(thisPlayer === 1 ){
     playerOne.set(player);
+
   } else if (thisPlayer === 2) {
     playerTwo.set(player);
   }
 });
 
+  //Retrive choice of player
+playerOne.on("value", function(snapshot) {
+  playerOneChoice = snapshot.val().choice;
+  console.log("hi? " + playerOneChoice);
+
+  if (playerOneChoice && playerTwoChoice) {
+    gameLogic();
+  }
+})
+
+playerTwo.on("value", function(snapshot) {
+  playerTwoChoice = snapshot.val().choice;
+  console.log("hi? " + playerTwoChoice);
+
+  if (playerOneChoice && playerTwoChoice) {
+    gameLogic();
+  }
+})
+
   //Rock paper scissors logic 
+var gameLogic = function() {
+  if (playerOneChoice === playerTwoChoice) {
+    console.log("tie");
+  } else if (playerOneChoice === "rock" && playerTwoChoice === "scissor") {
+    console.log("player one wins");
+  } else if (playerOneChoice === "scissor" && playerTwoChoice === "paper") {
+    console.log("player one wins");
+  } else if (playerOneChoice === "paper" && playerTwoChoice === "rock") {
+    console.log("player one wins");
+  } else {
+    console.log("player two wins");
+  }
+
+}
 
   //Create chat window 
