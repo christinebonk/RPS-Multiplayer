@@ -19,6 +19,15 @@ var thisPlayer; //holds whether current player is 1 or 2
 var player; //player object
 var playerOneChoice;
 var playerTwoChoice;
+var playerOneTurn = false;
+var playerTwoTurn = false;
+
+//Score
+var playerOneWins = 0;
+var playerOneLosses = 0;
+var playerTwoWins = 0;
+var playerTwoLosses = 0;
+
 
 
   //Create player object when user enters game
@@ -30,7 +39,8 @@ $("#submit-button").on("click", function(event) {
   player = {
     name: playerName,
     losses: 0,
-    wins: 0
+    wins: 0,
+    turn: false
   }
 
   //Push player to firebase
@@ -53,36 +63,107 @@ $("#submit-button").on("click", function(event) {
 
   //Collect choices of player
 $(".choices").on("click", function(){
+
+  //collect choice
   var choice = $(this).attr("data");
   player.choice = choice;
+  player.turn = true;
   console.log(choice); 
 
+  //set choice in firebase
   if(thisPlayer === 1 ){
     playerOne.set(player);
 
   } else if (thisPlayer === 2) {
     playerTwo.set(player);
   }
+
+  //update player turns
+  function updateTurns() {
+
+    //update player 1
+    playerOne.once("value").then(function(snapshot) {
+      playerOneTurn = snapshot.val().turn;
+
+      //update player 2
+        playerTwo.once("value").then(function(snapshot) {
+            playerTwoTurn = snapshot.val().turn;
+        });
+    });
+    
+  };
+
+  //check if players have taken their turns
+  function checkTurns() {
+    if (playerOneTurn && playerTwoTurn) {
+      playerOne.once("value").then(function(snapshot) {
+        playerOneChoice = snapshot.val().choice;
+      });
+      playerTwo.once("value").then(function(snapshot) {
+        playerTwoChoice = snapshot.val().choice;
+      });
+      setTimeout(gameLogic,1000);
+    }
+  }
+
+  updateTurns();
+  setTimeout(checkTurns,1000);
+
+
+
+
 });
 
+  //determine if both players have taken turn
+  
+  
+
+
+
+  // .then(gameLogic());
+
+    // if (playerOneTurn && playerTwoTurn) {
+    // playerOne.once("value").then(function(snapshot) {
+    //   playerOneChoice = snapshot.val().choice;
+    // })
+    // playerTwo.once("value").then(function(snapshot) {
+    //   playerTwoChoice = snapshot.val().choice;
+    // });
+
+  //   setTimeout(gameLogic, 5000);
+
+  // }
+
+  // })
+
+
+
+  
+
+// });
+
   //Retrive choice of player
-playerOne.on("value", function(snapshot) {
-  playerOneChoice = snapshot.val().choice;
-  console.log("hi? " + playerOneChoice);
+// playerOne.on("value", function(snapshot) {
+//   //check if player has chosen answer
+//   if(snapshot.child("choice").exists()) {
+//     playerOneChoice = snapshot.val().choice;
+//   };
+//   //check if opponent and player have chosen answer
+//   if (playerOneChoice && playerTwoChoice) {
+//     gameLogic();
+//   }
+// })
 
-  if (playerOneChoice && playerTwoChoice) {
-    gameLogic();
-  }
-})
-
-playerTwo.on("value", function(snapshot) {
-  playerTwoChoice = snapshot.val().choice;
-  console.log("hi? " + playerTwoChoice);
-
-  if (playerOneChoice && playerTwoChoice) {
-    gameLogic();
-  }
-})
+// playerTwo.on("value", function(snapshot) {
+//   //check if player has chosen answer
+//   if(snapshot.child("choice").exists()) {
+//     playerTwoChoice = snapshot.val().choice;
+//   }
+//   //check if opponent and player have chosen answer
+//   if (playerOneChoice && playerTwoChoice) {
+//     gameLogic();
+//   }
+// })
 
   //Rock paper scissors logic 
 var gameLogic = function() {
@@ -90,14 +171,40 @@ var gameLogic = function() {
     console.log("tie");
   } else if (playerOneChoice === "rock" && playerTwoChoice === "scissor") {
     console.log("player one wins");
+    playerOneWins ++
+    playerTwoLosses ++
   } else if (playerOneChoice === "scissor" && playerTwoChoice === "paper") {
     console.log("player one wins");
+    playerOneWins ++
+    playerTwoLosses ++
   } else if (playerOneChoice === "paper" && playerTwoChoice === "rock") {
     console.log("player one wins");
+    playerOneWins ++
+    playerTwoLosses ++
   } else {
     console.log("player two wins");
+    playerOneLosses ++
+    playerTwoWins ++
+  }
+
+  console.log(playerOneChoice);
+  console.log(playerTwoChoice);
+
+  //set choice in firebase
+  if(thisPlayer === 1 ){
+    player.wins = playerOneWins;
+    player.losses = playerOneLosses;
+    playerOne.set(player);
+  } else if (thisPlayer === 2) {
+    player.wins = playerTwoWins;
+    player.losses = playerTwoLosses;
+    playerTwo.set(player);
   }
 
 }
+
+//update player score
+
+//repeat game
 
   //Create chat window 
