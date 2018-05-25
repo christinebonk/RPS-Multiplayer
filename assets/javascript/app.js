@@ -71,8 +71,9 @@ $("body").on("click", ".choices", function(){
     //collect choice
     var choice = $(this).attr("data");
     player.choice = choice;
-    player.turn = true;
     console.log(choice); 
+    turnCount++;
+    turnRef.set(turnCount);
 
     //set choice in firebase
     if(thisPlayer === 1 ){
@@ -87,33 +88,53 @@ $("body").on("click", ".choices", function(){
     
 });
 
+//listener for choices
+playerOne.on("value", function(snapshot) {
+  if(snapshot.child("choice").exists()) {
+    console.log("1+: " + snapshot.val().choice);
+    playerOneChoice = snapshot.val().choice;
+  };
+});
+
+playerTwo.on("value", function(snapshot) {
+  if(snapshot.child("choice").exists()) {
+    console.log("2+: " + snapshot.val().choice);
+    playerTwoChoice = snapshot.val().choice;
+  };
+});
+
 //listener for turns 
 turnRef.on("value", function(snapshot) {
   turnCount = snapshot.val();
   if (turnCount === 0) {
 
   } else if (turnCount === 1) {
+    $("#player2-choices").empty();
     for(i=0;i<choices.length;i++) {
-    var newChoice = $("<div class='choices'>" + choices[i] + "</div>");
-    newChoice.attr("data", choices[i]);
-    $("#player1-choices").append(newChoice);
-  }
-    
-    console.log(turnCount);
-    console.log(thisPlayer);
-    
-
+      var newChoice = $("<div class='choices'>" + choices[i] + "</div>");
+      newChoice.attr("data", choices[i]);
+      $("#player1-choices").append(newChoice);
+    }
   } else if (turnCount === 2) {
-    $("#player2-choices").append(displayChoices);
-    
+    $("#player1-choices").empty();
+    for(i=0;i<choices.length;i++) {
+      var newChoice = $("<div class='choices'>" + choices[i] + "</div>");
+      newChoice.attr("data", choices[i]);
+      $("#player2-choices").append(newChoice);
+    } 
+  } else if (turnCount === 3) {
+    setTimeout(gameLogic,1000);
   }
 });
+
 
 
   
 
   //Rock paper scissors logic 
 var gameLogic = function() {
+  console.log("1: " + playerOneChoice);
+  console.log("2: " + playerTwoChoice);
   if (playerOneChoice === playerTwoChoice) {
     console.log("tie");
   } else if (playerOneChoice === "rock" && playerTwoChoice === "scissor") {
@@ -134,7 +155,8 @@ var gameLogic = function() {
     playerTwoWins ++
   }
 
-  player.turn = false;
+  turnCount = 1;
+  turnRef.set(turnCount);
 
 
   //set choice in firebase
