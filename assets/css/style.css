@@ -29,6 +29,11 @@ h2 {
 	font-weight: 400;
 }
 
+h3 {
+	color: white;
+	font-size: 30px;
+}
+
 /*Welcome screen*/
 #welcome-screen {
 	height: 100vh;
@@ -86,9 +91,18 @@ input[type=submit]:hover {
 
 /*Choices*/
 
-#choices {
-	border: 5px dotted #f2b611;
-	padding: 20px;
+#results {
+	width: 100%;
+}
+
+.player-box {
+	width: calc(50% - 20px);
+	border: 5px yellow dotted;
+	margin: 10px;
+	float: left;
+	padding: 10px;
+	text-align: center;
+	height: 400px;
 }
 
 .choice-box {

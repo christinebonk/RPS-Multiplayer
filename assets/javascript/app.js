@@ -60,13 +60,17 @@ $("#submit-button").on("click", function(event) {
       thisPlayer = 1;
       playerOne.set(player);
       $("#welcome-screen").addClass("remove");
+      $("#headline").text("Hi " + playerOneName + "! Waiting for another player to join.");
+      $("#player1-name").text(playerOneName);
     } else if (numPlayers === 1) {
       console.log("player 2")
       thisPlayer = 2;
       playerTwo.set(player);
       turnCount++
       turnRef.set(turnCount)
-      $("#welcome-screen").addClass("remove");  
+      $("#welcome-screen").addClass("remove");
+      $("#player1-name").text(playerOneName);
+      $("#player2-name").text(playerTwoName);  
     } else {
       console.log("Too many players")
     }   
@@ -198,11 +202,12 @@ var gameLogic = function() {
 //discounnect player 
 // var con 
 
-// connectedRef.on("value",function(snapshot){
-//   if(snapshot.val()) {
-//     if()
-//   }
-// });
+connectedRef.on("value",function(snapshot){
+  if(snapshot.val()) {
+    playerOne.onDisconnect().remove();
+    playerTwo.onDisconnect().remove();
+  }
+});
 
 
 
