@@ -12,7 +12,9 @@
 <body>
 	<!--Header-->
 	<header>
-		<h1>Rock, Paper, Scissors</h1>
+		<div class="wrapper">
+			<h1>Rock. Paper. Scissors.</h1>
+		</div>
 	</header>
 	<!--Main Section-->
 	
@@ -32,26 +34,27 @@
 	</section>
 	
 	<main>
-		<h2>Make your choice</h2>
-		<section id="choices">
-			<div id="player1-choices">	
-			</div>
-			<div id="player2-choices">
-			</div>
-		</section>
-		<div id="result">
-			<div id="player-1">
-				<h3 id="player1-name"></h3>
-				<div id="player1-choice"></div>
-				<div id="player1-score"></div>
-			</div>
-			<div id="player-2">
-				<h3 id="player2-name"></h3>
-				<div id="player2-choice"></div>
-				<div id="player2-score"></div>
+		<div class="wrapper">
+			<h2 id="headline">Waiting for your companion</h2>
+			<section id="choices">
+				<div id="player1-choices" class="choice-box">	
+				</div>
+				<div id="player2-choices" class="choice-box">
+				</div>
+			</section>
+			<div id="result">
+				<div id="player-1">
+					<h3 id="player1-name"></h3>
+					<div id="player1-choice"></div>
+					<div id="player1-score"></div>
+				</div>
+				<div id="player-2">
+					<h3 id="player2-name"></h3>
+					<div id="player2-choice"></div>
+					<div id="player2-score"></div>
+				</div>
 			</div>
 		</div>
-
 	</main>
 
 	<div id="test"></div>

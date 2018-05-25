@@ -15,8 +15,21 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}bo
 
 html {
 	font-family: 'Heebo', sans-serif;
-	background: tomato;
+	background: #44afbd;
 }
+
+h1 {
+	font-size: 100px;
+	color: white;
+}
+
+h2 {
+	font-size: 40px;
+	color: white;
+	font-weight: 400;
+}
+
+/*Welcome screen*/
 #welcome-screen {
 	height: 100vh;
 	width: 100vw;
@@ -67,19 +80,35 @@ input[type=submit]:hover {
 	margin: 0 auto;
 }
 
-h1 {
-	font-size: 100px;
-	color: white;
-}
-
-h2 {
-	font-size: 40px;
-	color: white;
-	font-weight: 400;
-}
-
 .remove {
 	display: none;
 }
+
+/*Choices*/
+
+#choices {
+	border: 5px dotted #f2b611;
+	padding: 20px;
+}
+
+.choice-box {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.choices {
+	border-radius: 50%;
+	color: white;
+	background: tomato;
+	width: 100px;
+	height: 100px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 20px;
+}
+
+
 
 
