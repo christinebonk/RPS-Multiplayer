@@ -111,7 +111,7 @@ input[type=submit]:hover {
 	align-items: center;
 }
 
-.choices {
+.circles {
 	border-radius: 50%;
 	color: white;
 	background: tomato;
@@ -121,8 +121,17 @@ input[type=submit]:hover {
 	justify-content: center;
 	align-items: center;
 	margin: 20px;
+	cursor: pointer;
 }
 
+.grey {
+	background: grey;
+	cursor: not-allowed;
+}
+
+img {
+	height: 150px;
+}
 
 
 

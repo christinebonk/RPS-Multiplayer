@@ -1,4 +1,4 @@
-  // Initialize Firebase
+// Initialize Firebase
 var config = {
   apiKey: "AIzaSyCpviKj2rCDiIAzDmQ9FbmwYWbnYJLNhjY",
   authDomain: "rps-multiplayer-8d9ba.firebaseapp.com",
@@ -19,7 +19,6 @@ var playerTwo = playersRef.child("two");
 var connectedRef = database.ref(".info/connected"); 
 var connectionsRef = database.ref("/connections");
 var turnRef = database.ref("/turn");
-var thisPlayerRef
 
 //Other Variables
 var turnCount = 0;
@@ -30,6 +29,11 @@ var playerTwoChoice;
 var playerOneName
 var playerTwoName
 var choices = ["rock", "paper", "scissors"];
+var images = {
+  rock: "images/rock.png",
+  paper: "images/paper.png",
+  scissors: "images/scissors.png"
+};
 
 //Score
 var playerOneWins = 0;
@@ -87,19 +91,19 @@ $("body").on("click", ".choices", function(){
     console.log(choice); 
     turnCount++;
     turnRef.set(turnCount);
-
     //set choice in firebase
     if(thisPlayer === 1 ){
       playerOne.set(player);
+      var createImage = assignImage(choice);
+      $("#player1-choices").html(createImage);
+      
     } else if (thisPlayer === 2) {
       playerTwo.set(player);
+      
     }
-
   } else {
     $("#headline").text("It's not your turn");
-    console.log("It is not your turn")
-  }
-    
+  }   
 });
 
 //listener for changes to players
@@ -108,7 +112,8 @@ playerOne.on("value", function(snapshot) {
     playerOneName = snapshot.val().name;
   }
   if(snapshot.child("choice").exists()) {
-    playerOneChoice = snapshot.val().choice;
+    playerOneChoice = snapshot.val().choice;  
+    
   };
 });
 
@@ -118,9 +123,26 @@ playerTwo.on("value", function(snapshot) {
   }
   if(snapshot.child("choice").exists()) {
     playerTwoChoice = snapshot.val().choice;
+    var createImage = assignImage(playerTwoChoice);
+    $("#player2-choices").html(createImage);
+    var createImage2 = assignImage(playerOneChoice);
+      $("#player1-choices").html(createImage2);
+
   };
 });
 
+function assignImage(choice) {
+  var newImage;
+  if (choice == "rock") {
+    newImage = $("<img src='assets/images/rock.png' alt='rock'>"); 
+  } else if (choice == "paper") {
+    newImage = $("<img src='assets/images/paper-plane.png' alt='paper'>"); 
+  } else if (choice == "scissors") {
+    newImage = $("<img src='assets/images/scissors.png' alt='scissors'>"); 
+  }
+
+  return newImage;
+}
 
 
     
@@ -129,22 +151,38 @@ turnRef.on("value", function(snapshot) {
   turnCount = snapshot.val();
   if (turnCount === 0) {
 
+    //Define actions on turn 1
   } else if (turnCount === 1) {
-    $("#player2-choices").empty();
+    $("#player2-name").text(playerTwoName);  
     $("#headline").text("It is " + playerOneName + "'s turn!");
+    $("#player1-choices").empty();
+    $("#player2-choices").empty();
     for(i=0;i<choices.length;i++) {
-      var newChoice = $("<div class='choices'>" + choices[i] + "</div>");
+      var newChoice = $("<div class='choices circles'>" + choices[i] + "</div>");
       newChoice.attr("data", choices[i]);
       $("#player1-choices").append(newChoice);
     }
+    for(i=0;i<choices.length;i++) {
+      var newChoice = $("<div class='circles grey'>" + choices[i] + "</div>");
+      $("#player2-choices").append(newChoice);
+    }
+
+    //Define actions on turn 2
   } else if (turnCount === 2) {
     $("#headline").text("It is " + playerTwoName + "'s turn!");
     $("#player1-choices").empty();
+    $("#player2-choices").empty();
     for(i=0;i<choices.length;i++) {
-      var newChoice = $("<div class='choices'>" + choices[i] + "</div>");
+      var newChoice = $("<div class='choices circles'>" + choices[i] + "</div>");
       newChoice.attr("data", choices[i]);
       $("#player2-choices").append(newChoice);
-    } 
+    }
+    for(i=0;i<choices.length;i++) {
+      var newChoice = $("<div class='circles grey'>" + choices[i] + "</div>");
+      $("#player1-choices").append(newChoice);
+    }
+
+    //Define actions on turn 3
   } else if (turnCount === 3) {
     setTimeout(gameLogic,1000);
   }
@@ -183,9 +221,13 @@ var gameLogic = function() {
   }
 
   //reset turn count
-  turnCount = 1;
-  turnRef.set(turnCount);
 
+  setTimeout(function(){
+    turnCount = 1;
+    turnRef.set(turnCount);
+
+  }, 6000)
+  
   //update player score
   if(thisPlayer === 1 ){
     player.wins = playerOneWins;
