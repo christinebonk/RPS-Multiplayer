@@ -83,6 +83,7 @@ input[type=submit]:hover {
 .wrapper {
 	max-width: 1080px;
 	margin: 0 auto;
+	width: 80%;
 }
 
 .remove {
@@ -133,5 +134,39 @@ img {
 	height: 150px;
 }
 
+/*Media Query*/
 
+@media only screen and (max-width: 800px) {
+
+	#welcome-screen {
+		align-items: center;
+	}
+    h1 {
+        font-size: 50px;
+    }
+
+    .form {
+		flex-wrap: wrap;
+	}
+
+	h2 {
+		font-size: 20px;
+	}
+
+	input[type=text] {
+		font-size: 15px;
+		margin: 0;
+	}
+
+	input[type=submit] {
+		font-size: 15px;
+
+	}
+
+	.player-box {
+		width: 100%;
+
+	}
+
+}
 

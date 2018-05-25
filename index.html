@@ -7,6 +7,9 @@
 	<link href="https://fonts.googleapis.com/css?family=Heebo:400,700" rel="stylesheet">
 	<!--My CSS-->
 	<link rel="stylesheet" href="assets/css/style.css">
+	<!--Favicon-->
+	<link rel="icon" href="assets/images/scissors.png">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 </head>
 <body>
@@ -14,6 +17,7 @@
 	<header>
 		<div class="wrapper">
 			<h3>Rock. Paper. Scissors.</h3>
+			<h4></h4>
 		</div>
 	</header>
 	<!--Main Section-->
@@ -22,6 +26,7 @@
 	<section id="welcome-screen">
 		<div class="wrapper">
 			<h1>Rock. Paper. Scissors.</h1>
+			<!--Form to Input Name-->
 			<div class="form">
 				<h2>get in on the action:</h2>
 				<form>
@@ -30,28 +35,39 @@
 					<input type="submit" id="submit-button">
 				</form>
 			</div>
+			<!--End of Form-->
 		</div>
 	</section>
 	
+	<!--Main Gameplay Screen-->
 	<main>
 		<div class="wrapper">
 			<h2 id="headline"></h2>
 			<div id="result" class="clearfix">
+				<!--Player One Area-->
 				<div id="player-1" class="player-box">
 					<h3 id="player1-name"></h3>
 					<div id="player1-choices" class="choice-box">	
 						
 					</div>
 					<div id="player1-choice"></div>
-					<div id="player1-score"></div>
+					<h3>Player 2 Score</h3>
+					<div id="player1-score">
+						<div id="player1-wins"></div>
+						<div id="player1-losses"></div>
+					</div>
 				</div>
+				<!--Player Two Area-->
 				<div id="player-2" class="player-box">
 					<h3 id="player2-name">Waiting for Player 2</h3>
 					<div id="player2-choices" class="choice-box">
-						
 					</div>
 					<div id="player2-choice"></div>
-					<div id="player2-score"></div>
+					<div id="player2-score">
+						<h3>Player 2 Score</h3>
+						<div id="player2-wins"></div>
+						<div id="player2-losses"></div>
+					</div>
 				</div>
 			</div>
 		</div>

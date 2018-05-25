@@ -55,7 +55,6 @@ $("#submit-button").on("click", function(event) {
     losses: 0,
     wins: 0,
   }
-
   //Push player to firebase
   playersRef.once("value").then(function(snapshot) {
     var numPlayers = snapshot.numChildren();
@@ -65,7 +64,7 @@ $("#submit-button").on("click", function(event) {
       playerOne.set(player);
       $("#welcome-screen").addClass("remove");
       $("#headline").text("Hi " + playerOneName + "! Waiting for another player to join.");
-      $("#player1-name").text(playerOneName);
+      $("#player1-name").text(playerOneName + " (you)");
     } else if (numPlayers === 1) {
       console.log("player 2")
       thisPlayer = 2;
@@ -74,7 +73,7 @@ $("#submit-button").on("click", function(event) {
       turnRef.set(turnCount)
       $("#welcome-screen").addClass("remove");
       $("#player1-name").text(playerOneName);
-      $("#player2-name").text(playerTwoName);  
+      $("#player2-name").text(playerTwoName + " (you)");  
     } else {
       console.log("Too many players")
     }   
@@ -111,10 +110,11 @@ playerOne.on("value", function(snapshot) {
   if(snapshot.child("name").exists()) {
     playerOneName = snapshot.val().name;
   }
+
   if(snapshot.child("choice").exists()) {
-    playerOneChoice = snapshot.val().choice;  
-    
+    playerOneChoice = snapshot.val().choice;   
   };
+
 });
 
 playerTwo.on("value", function(snapshot) {
@@ -127,8 +127,8 @@ playerTwo.on("value", function(snapshot) {
     $("#player2-choices").html(createImage);
     var createImage2 = assignImage(playerOneChoice);
       $("#player1-choices").html(createImage2);
-
   };
+
 });
 
 function assignImage(choice) {
@@ -150,9 +150,16 @@ function assignImage(choice) {
 turnRef.on("value", function(snapshot) {
   turnCount = snapshot.val();
   if (turnCount === 0) {
+    
 
     //Define actions on turn 1
   } else if (turnCount === 1) {
+    //Update score
+    $("#player1-wins").text("Wins: " + playerOneWins);
+    $("#player2-wins").text("Wins: " + playerTwoWins);
+    $("#player1-losses").text("Losses: " + playerOneLosses);
+    $("#player2-losses").text("Losses: " + playerTwoLosses);
+    //
     $("#player2-name").text(playerTwoName);  
     $("#headline").text("It is " + playerOneName + "'s turn!");
     $("#player1-choices").empty();
@@ -189,21 +196,18 @@ turnRef.on("value", function(snapshot) {
 });
 
 
-
-  
-
   //Rock paper scissors logic 
 var gameLogic = function() {
 
   if (playerOneChoice === playerTwoChoice) {
     console.log("tie");
     $("#headline").text(playerOneName + " and " + playerTwoName + " Tie!");
-  } else if (playerOneChoice === "rock" && playerTwoChoice === "scissor") {
+  } else if (playerOneChoice === "rock" && playerTwoChoice === "scissors") {
     console.log("player one wins");
     $("#headline").text(playerOneName + " takes this round!")
     playerOneWins ++
     playerTwoLosses ++
-  } else if (playerOneChoice === "scissor" && playerTwoChoice === "paper") {
+  } else if (playerOneChoice === "scissors" && playerTwoChoice === "paper") {
     console.log("player one wins");
     $("#headline").text(playerOneName + " takes this round!")
     playerOneWins ++
@@ -215,18 +219,14 @@ var gameLogic = function() {
     playerTwoLosses ++
   } else {
     console.log("player two wins");
-    $("#headline").text(playerTwoName + " takes this round!")
+    $("#headline").text(playerTwoName + " gets it this time!")
     playerOneLosses ++
     playerTwoWins ++
   }
 
-  //reset turn count
+  
 
-  setTimeout(function(){
-    turnCount = 1;
-    turnRef.set(turnCount);
-
-  }, 6000)
+ 
   
   //update player score
   if(thisPlayer === 1 ){
@@ -238,6 +238,13 @@ var gameLogic = function() {
     player.losses = playerTwoLosses;
     playerTwo.set(player);
   }
+
+  //reset turn count
+   setTimeout(function(){
+    turnCount = 1;
+    turnRef.set(turnCount);
+
+  }, 6000)
 
 }
 
