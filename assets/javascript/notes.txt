@@ -1,0 +1,14 @@
+Get users location
+
+Suggest currency based on location
+
+Populate currecy into query
+
+Get coin with highest growth rate
+	- Query all crypto coins within a specific period
+	- Calculate growth rate for each coin
+	- Order based on growth rate
+
+
+Exchange rate of 
+https://rest.coinapi.io/v1/exchangerate/CAD?&apikey=16205A34-295D-46AC-9C6D-C7C23563FBA8
