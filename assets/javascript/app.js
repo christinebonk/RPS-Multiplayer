@@ -51,12 +51,14 @@ $("#submit-button").on("click", function(event) {
       console.log("player 1");
       thisPlayer = 1;
       playerOne.set(player);
+      $("#welcome-screen").addClass("remove");
     } else if (numPlayers === 1) {
       console.log("player 2")
       thisPlayer = 2;
       playerTwo.set(player);
       turnCount++
       turnRef.set(turnCount)
+      $("#welcome-screen").addClass("remove");
     } else {
       console.log("Too many players")
     }
@@ -133,8 +135,7 @@ turnRef.on("value", function(snapshot) {
 
   //Rock paper scissors logic 
 var gameLogic = function() {
-  console.log("1: " + playerOneChoice);
-  console.log("2: " + playerTwoChoice);
+
   if (playerOneChoice === playerTwoChoice) {
     console.log("tie");
   } else if (playerOneChoice === "rock" && playerTwoChoice === "scissor") {

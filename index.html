@@ -3,32 +3,42 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Rock, Paper, Scissors!</title>
+	<!--My Font-->
+	<link href="https://fonts.googleapis.com/css?family=Heebo:400,700" rel="stylesheet">
 	<!--My CSS-->
 	<link rel="stylesheet" href="assets/css/style.css">
+
 </head>
 <body>
 	<!--Header-->
 	<header>
-		<h1>Rock, Paper Scissors</h1>
+		<h1>Rock, Paper, Scissors</h1>
 	</header>
 	<!--Main Section-->
 	
 	<!--Welcome Screen (Only Visible at Start)-->
 	<section id="welcome-screen">
-		<h2>Enter your name to begin!</h2>
-		<form>
-			<label for="name">Name</label>
-			<input type="text" name="name" id="name">
-			<input type="submit" id="submit-button">
-		</form>
+		<div class="wrapper">
+			<h1>Rock. Paper. Scissors.</h1>
+			<div class="form">
+				<h2>get in on the action:</h2>
+				<form>
+					<label class="visuallyhidden" for="name">Name</label>
+					<input type="text" name="name" id="name" placeholder="your name here">
+					<input type="submit" id="submit-button">
+				</form>
+			</div>
+		</div>
 	</section>
 	
 	<main>
 		<h2>Make your choice</h2>
-		<div id="player1-choices">	
-		</div>
-		<div id="player2-choices">
-		</div>
+		<section id="choices">
+			<div id="player1-choices">	
+			</div>
+			<div id="player2-choices">
+			</div>
+		</section>
 		<div id="result">
 			<div id="player-1">
 				<h3 id="player1-name"></h3>
