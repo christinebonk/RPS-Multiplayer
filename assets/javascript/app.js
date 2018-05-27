@@ -13,23 +13,13 @@ firebase.initializeApp(config);
 var database = firebase.database();
 var playersRef = database.ref("/players");
 var chat = database.ref("/chat");
-var chatRef1 = database.ref("/chat1");
-var chatRef2 = database.ref("/chat2");
-
 var playerOne = playersRef.child("one");
 var playerTwo = playersRef.child("two");
 var connectedRef = database.ref(".info/connected"); 
 var connectionsRef = database.ref("/connections");
 var turnRef = database.ref("/turn");
 
-//
-
-chat.child("chat2").remove();
-chat.child("chat1").remove();
-
-
-
-//Other Variables
+//Game Variables
 var turnCount = 0;
 var thisPlayer; //holds whether current player is 1 or 2
 var player; //player object
@@ -263,11 +253,18 @@ var gameLogic = function() {
 
 }
 
-  //Create chat window 
+//Create chat window
+chat.child("chat2").remove();
+chat.child("chat1").remove();
+
+$("#chat-header").on("click", function(){
+  $("#chat").toggleClass("up");
+})
 
 $("#chat-button").on("click", function(event) {
   event.preventDefault();
   var message = $("#chat-input").val().trim();
+  $("#chat-input").val("");
   if(thisPlayer === 1) {
     chat.child("chat1").set(message);
   } else if (thisPlayer === 2) {
@@ -281,7 +278,7 @@ chat.child("chat1").on("value", function(snapshot) {
     var newMessage = snapshot.val();
     var newList = $("<p>");
     newList.text(playerOneName + ": " + newMessage);
-    $("#chat-display").append(newList)
+    $("#chat-display").append(newList);
   } 
 });
 

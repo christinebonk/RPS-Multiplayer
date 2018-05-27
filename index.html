@@ -23,7 +23,7 @@
 	<!--Main Section-->
 	
 	<!--Welcome Screen (Only Visible at Start)-->
-	<section id="welcome-screen">
+	<section id="welcome-screen" class="middle">
 		<div class="wrapper">
 			<h1>Rock. Paper. Scissors.</h1>
 			<!--Form to Input Name-->
@@ -48,11 +48,11 @@
 				<div id="player-1" class="player-box">
 					<h3 id="player1-name"></h3>
 					<div id="player1-choices" class="choice-box">	
-						
+				
 					</div>
 					<div id="player1-choice"></div>
-					<h3>Player 2 Score</h3>
-					<div id="player1-score">
+					<div id="player1-score" class="score">
+						<h4>Player 1 Score</h4>
 						<div id="player1-wins"></div>
 						<div id="player1-losses"></div>
 					</div>
@@ -63,8 +63,8 @@
 					<div id="player2-choices" class="choice-box">
 					</div>
 					<div id="player2-choice"></div>
-					<div id="player2-score">
-						<h3>Player 2 Score</h3>
+					<div id="player2-score" class="score">
+						<h4>Player 2 Score</h4>
 						<div id="player2-wins"></div>
 						<div id="player2-losses"></div>
 					</div>
@@ -74,6 +74,7 @@
 	</main>
 
 	<div id="chat">
+		<h4 id="chat-header">Click to Chat! <span id="chat-counter"></span></h4>
 		<div id="chat-display">
 		</div>
 		<form>
