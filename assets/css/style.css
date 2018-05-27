@@ -16,6 +16,7 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}bo
 html {
 	font-family: 'Heebo', sans-serif;
 	background: #44afbd;
+	color: white;
 }
 
 h1 {
@@ -51,7 +52,7 @@ h3 {
 	align-items: center;
 }
 
-input[type=text] {
+#welcome-screen input[type=text] {
 	background: tomato;
 	border: none;
 	text-align: center;
@@ -61,11 +62,11 @@ input[type=text] {
 	margin-left: 20px;
 }
 
-input[type=text]::placeholder {
+#welcome-screen input[type=text]::placeholder {
 	color: rgba(255,255,255,0.6);
 }
 
-input[type=submit] {
+#welcome-screen input[type=submit] {
 	background: #44afbd;
 	color: white;
 	border-radius: 5px;
@@ -75,7 +76,7 @@ input[type=submit] {
 	transition: background 0.3s ease;
 }
 
-input[type=submit]:hover {
+#welcome-screen input[type=submit]:hover {
 	background: #2f7b85;
 	cursor: pointer;
 }
@@ -134,6 +135,38 @@ img {
 	height: 150px;
 }
 
+/*Chat*/
+
+#chat {
+	background: rgba(0,0,0,0.5);
+	padding: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	flex-wrap: wrap;
+}
+
+#chat form {
+	width: 50%;
+	padding: 10px;
+}
+
+#chat-display {
+	background: white;
+	padding: 10px;
+	color: black;
+	width: 50%;
+}
+
+#chat-input {
+	width: 80%;
+}
+
+#chat-button {
+	width: 18%;
+}
+
 /*Media Query*/
 
 @media only screen and (max-width: 800px) {
@@ -169,4 +202,6 @@ img {
 	}
 
 }
+
+
 

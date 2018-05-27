@@ -28,7 +28,7 @@
 			<h1>Rock. Paper. Scissors.</h1>
 			<!--Form to Input Name-->
 			<div class="form">
-				<h2>get in on the action:</h2>
+				<h2 id="intro">get in on the action:</h2>
 				<form>
 					<label class="visuallyhidden" for="name">Name</label>
 					<input type="text" name="name" id="name" placeholder="your name here">
@@ -73,7 +73,16 @@
 		</div>
 	</main>
 
-	<div id="test"></div>
+	<div id="chat">
+		<div id="chat-display">
+		</div>
+		<form>
+			<label class="visuallyhidden" for="chat-input">Message</label>
+			<input type="text" id="chat-input" name="chat-input">
+			<input id="chat-button" type="submit">
+		</form>
+		
+	</div>
 
 <!--JQuery-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

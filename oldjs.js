@@ -12,22 +12,11 @@ firebase.initializeApp(config);
 //FB DB 
 var database = firebase.database();
 var playersRef = database.ref("/players");
-var chat = database.ref("/chat");
-var chatRef1 = database.ref("/chat1");
-var chatRef2 = database.ref("/chat2");
-
 var playerOne = playersRef.child("one");
 var playerTwo = playersRef.child("two");
 var connectedRef = database.ref(".info/connected"); 
 var connectionsRef = database.ref("/connections");
 var turnRef = database.ref("/turn");
-
-//
-
-chat.child("chat2").remove();
-chat.child("chat1").remove();
-
-
 
 //Other Variables
 var turnCount = 0;
@@ -53,6 +42,42 @@ var playerTwoLosses = 0;
 //set turn to 0
 turnRef.set(turnCount);
 
+//
+
+var con;
+
+connectedRef.on("value",function(snapshot){
+  if(snapshot.val()) {
+    con = connectionsRef.push(true);
+    con.onDisconnect().remove();
+  }
+}); 
+
+
+//set online function
+// function setOnline(playerID) {
+//   var connected = $firebaseObject(connectedRef); 
+//   var online = $firebaseArray(playersRef.child(uid+'/online'));
+
+//   connected.$watch(function() {
+//     if(connected.$value === true) {
+//       online.$add(true).then(function(connectedRef) {
+//         connectedRef.onDisconnect().remove();
+//       })
+//     }
+//   })
+// }
+
+
+// var con
+//Track connections
+// connectedRef.on("value",function(snapshot){
+//   if(snapshot.val()) {
+
+//     con.onDisconnect().setValue();
+//   };
+// });
+
 //Create player object when user enters game
 $("#submit-button").on("click", function(event) {
   event.preventDefault(); 
@@ -63,44 +88,42 @@ $("#submit-button").on("click", function(event) {
     name: playerName,
     losses: 0,
     wins: 0,
+    connected: connected
   }
 
   //Push player to firebase
   playersRef.once("value").then(function(snapshot) {
     var numPlayers = snapshot.numChildren();
-    //set up player 1
     if (numPlayers === 0) {
       console.log("player 1");
       thisPlayer = 1;
       playerOne.set(player);
-      playerOne.onDisconnect().remove();
       $("#welcome-screen").addClass("remove");
       $("#headline").text("Hi " + playerOneName + "! Waiting for another player to join.");
       $("#player1-name").text(playerOneName + " (you)");
-    //set up player 2
     } else if (numPlayers === 1) {
       console.log("player 2")
       thisPlayer = 2;
       playerTwo.set(player);
-      playerTwo.onDisconnect().remove();
       turnCount++
       turnRef.set(turnCount)
       $("#welcome-screen").addClass("remove");
       $("#player1-name").text(playerOneName);
       $("#player2-name").text(playerTwoName + " (you)");  
-    //stop if too many players
     } else {
-      $("#intro").text("Too many players in the game");
+      console.log("Too many players")
     }   
   })
 });
 
 //Collect choices of player
 $("body").on("click", ".choices", function(){
+
   if (turnCount === thisPlayer) {
     //collect choice
     var choice = $(this).attr("data");
     player.choice = choice;
+    console.log(choice); 
     turnCount++;
     turnRef.set(turnCount);
     //set choice in firebase
@@ -108,8 +131,10 @@ $("body").on("click", ".choices", function(){
       playerOne.set(player);
       var createImage = assignImage(choice);
       $("#player1-choices").html(createImage);
+      
     } else if (thisPlayer === 2) {
       playerTwo.set(player);
+      
     }
   } else {
     $("#headline").text("It's not your turn");
@@ -131,11 +156,7 @@ playerOne.on("value", function(snapshot) {
 playerTwo.on("value", function(snapshot) {
   if(snapshot.child("name").exists()) {
     playerTwoName = snapshot.val().name;
-      if(thisPlayer === 1) {
-        $("#player2-name").text(playerTwoName);  
-      }
   }
-
   if(snapshot.child("choice").exists()) {
     playerTwoChoice = snapshot.val().choice;
     var createImage = assignImage(playerTwoChoice);
@@ -145,7 +166,6 @@ playerTwo.on("value", function(snapshot) {
   };
 
 });
-
 
 function assignImage(choice) {
   var newImage;
@@ -176,6 +196,7 @@ turnRef.on("value", function(snapshot) {
     $("#player1-losses").text("Losses: " + playerOneLosses);
     $("#player2-losses").text("Losses: " + playerTwoLosses);
     //
+    $("#player2-name").text(playerTwoName);  
     $("#headline").text("It is " + playerOneName + "'s turn!");
     $("#player1-choices").empty();
     $("#player2-choices").empty();
@@ -263,33 +284,17 @@ var gameLogic = function() {
 
 }
 
+//discounnect player 
+
+// connectedRef.on("value",function(snapshot){
+//   if(snapshot.val()) {
+//     playerOne.onDisconnect().remove();
+//     playerTwo.onDisconnect().remove();
+//   }
+// });
+
+
+
+
+
   //Create chat window 
-
-$("#chat-button").on("click", function(event) {
-  event.preventDefault();
-  var message = $("#chat-input").val().trim();
-  if(thisPlayer === 1) {
-    chat.child("chat1").set(message);
-  } else if (thisPlayer === 2) {
-    chat.child("chat2").set(message);
-  } 
-});
-
-chat.child("chat1").on("value", function(snapshot) {
-  if(snapshot.exists()) {
-    console.log("hi")
-    var newMessage = snapshot.val();
-    var newList = $("<p>");
-    newList.text(playerOneName + ": " + newMessage);
-    $("#chat-display").append(newList)
-  } 
-});
-
-chat.child("chat2").on("value", function(snapshot) {
-  if(snapshot.exists()) {
-    var newMessage = snapshot.val();
-    var newList = $("<p>");
-    newList.text(playerTwoName + ": " + newMessage);
-    $("#chat-display").append(newList);
-  }
-})
